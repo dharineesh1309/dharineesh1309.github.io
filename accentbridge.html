@@ -37,6 +37,11 @@ h2{font:600 22px/1.2 var(--sans);letter-spacing:-.02em;color:var(--ink);margin:4
 p{margin:0 0 12px;max-width:700px}
 .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .stack span{font:500 12.5px var(--mono);padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--tile);color:var(--ink)}
+.hook{margin:48px 0 0;padding:34px 30px;border-radius:16px;background:#2a2826;color:#cdc5b8}
+.hook .eyebrow{margin:0;color:#8a857c}
+.hook .big{font:700 clamp(30px,5vw,48px)/1.05 var(--sans);letter-spacing:-.035em;color:#efe9df;margin:10px 0 16px}
+.hook p{max-width:620px}
+.hook .q{font:italic 400 clamp(20px,2.6vw,25px)/1.35 var(--serif);color:#efe9df;margin:18px 0 0}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0;padding-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
 </style>
 </head>
@@ -60,9 +65,16 @@ p{margin:0 0 12px;max-width:700px}
     <div><b>onnx</b><span>runtime, no gpu</span></div>
   </div>
 
+  <section class="hook">
+    <span class="eyebrow">the hard part</span>
+    <p class="big">there is no dataset for this.</p>
+    <p>to learn an accent, a model needs the same sentence, said by the same voice, in both accents, thousands of times over. nobody has recorded that. not at scale, not in public, not anywhere.</p>
+    <p class="q">so how do you train a model on data that doesn't exist?</p>
+  </section>
+
   <h2>how it works</h2>
   <p>a small streaming model listens in 20 ms chunks, maps indian-accented speech to a us accent, and a hifi-gan vocoder turns it back into audio, all fast enough to sit inside a live call.</p>
-  <p>it's trained on synthetic parallel data, keeps the speaker's own voice, and is exported to onnx runtime so it runs on an ordinary laptop cpu.</p>
+  <p>it keeps the speaker's own voice and is exported to onnx runtime, so it runs on an ordinary laptop cpu.</p>
 
   <h2>built with</h2>
   <div class="stack"><span>pytorch</span><span>conformer</span><span>hifi-gan</span><span>speaker embeddings</span><span>onnx runtime</span><span>python</span></div>
