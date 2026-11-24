@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AccentBridge Demo</title>
+<meta name="description" content="AccentBridge: real-time Indian-to-US accent conversion, live on a video call. Demo by Dharineesh Athikesavan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#efe9df; --card:#f8f5ef; --tile:#fbf9f5; --ink:#222222; --text:#4a4846; --muted:#8a857c; --line:rgba(34,34,34,.09);
+  --sans:"Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:400 16px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+main{max-width:980px;margin:0 auto;padding:36px 16px 80px}
+.back{display:inline-flex;gap:8px;align-items:center;font:500 14px var(--sans);color:var(--ink);text-decoration:none;padding:6px 15px;border:1px solid var(--line);border-radius:999px;background:var(--tile);transition:border-color .15s}
+.back:hover{border-color:rgba(34,34,34,.4)}
+.eyebrow{display:block;margin-top:34px;font:400 12px var(--mono);color:var(--muted)}
+h1{font:700 clamp(40px,7vw,68px)/1 var(--sans);letter-spacing:-.04em;color:var(--ink);margin:10px 0 12px}
+.lede{font:italic 400 clamp(19px,2.4vw,23px)/1.4 var(--serif);color:var(--text);margin:0 0 30px;max-width:640px}
+.player{border-radius:16px;overflow:hidden;background:#1f1d1b;box-shadow:0 24px 60px -24px rgba(34,34,34,.45)}
+video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
+.hint{font:400 12px var(--mono);color:var(--muted);margin:12px 2px 0}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);margin:40px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts div{padding:18px 16px;border-left:1px solid var(--line)}
+.facts div:first-child{border-left:0;padding-left:0}
+.facts b{display:block;font:600 26px/1.1 var(--sans);letter-spacing:-.02em;color:var(--ink)}
+.facts span{font:400 12px var(--mono);color:var(--muted)}
+h2{font:600 22px/1.2 var(--sans);letter-spacing:-.02em;color:var(--ink);margin:44px 0 10px}
+p{margin:0 0 12px;max-width:700px}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.stack span{font:500 12.5px var(--mono);padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--tile);color:var(--ink)}
+@media (max-width:640px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0;padding-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html#projects">← back to portfolio</a>
+
+  <span class="eyebrow">featured project · speech ai</span>
+  <h1>accentbridge</h1>
+  <p class="lede">indian-to-us accent conversion, live on a video call. you talk normally; the other side hears a us accent, about 200 ms later.</p>
+
+  <div class="player">
+    <video src="assets/accentbridge-demo.mp4" controls playsinline preload="metadata"></video>
+  </div>
+  <p class="hint">turn your sound on. the demo is a recorded call with the converter running live.</p>
+
+  <div class="facts">
+    <div><b>~10M</b><span>parameters</span></div>
+    <div><b>20 ms</b><span>streaming frames</span></div>
+    <div><b>~200 ms</b><span>latency on a plain cpu</span></div>
+    <div><b>onnx</b><span>runtime, no gpu</span></div>
+  </div>
+
+  <h2>how it works</h2>
+  <p>a small streaming model listens in 20 ms chunks, maps indian-accented speech to a us accent, and a hifi-gan vocoder turns it back into audio, all fast enough to sit inside a live call.</p>
+  <p>it's trained on synthetic parallel data, keeps the speaker's own voice, and is exported to onnx runtime so it runs on an ordinary laptop cpu.</p>
+
+  <h2>built with</h2>
+  <div class="stack"><span>pytorch</span><span>conformer</span><span>hifi-gan</span><span>speaker embeddings</span><span>onnx runtime</span><span>python</span></div>
+</main>
+</body>
+</html>
