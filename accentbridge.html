@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AccentBridge Demo</title>
 <meta name="description" content="AccentBridge: real-time Indian-to-US accent conversion, live on a video call. Demo by Dharineesh Athikesavan.">
@@ -48,6 +49,13 @@ p{margin:0 0 12px;max-width:700px}
 .story p{font-size:16.5px;line-height:1.75}
 .story .end{font:italic 400 22px/1.4 var(--serif);color:var(--ink);margin-top:22px}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0;padding-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
+/* dark: same warm charcoal; the hook card flips to parchment */
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1b1917;--card:#24211e;--tile:#2a2622;--ink:#efe9df;--text:#c9c2b6;--muted:#8f887d;--line:rgba(239,233,223,.1)}
+[data-theme="dark"] .back:hover{border-color:rgba(239,233,223,.35)}
+[data-theme="dark"] .player{box-shadow:0 24px 60px -24px rgba(0,0,0,.8)}
+[data-theme="dark"] .hook{background:#efe9df;color:#4a4846}
+[data-theme="dark"] .hook .eyebrow{color:#8a857c}
+[data-theme="dark"] .hook .big{color:#222}
 </style>
 </head>
 <body>
