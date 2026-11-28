@@ -573,7 +573,7 @@ function draw(levels, padStart){
 draw(SNAP, 0);
 // live data: an hourly GitHub Action writes contributions.json to the repo; read it from raw so it's fresh without a site rebuild
 function loadGraph(){
-  fetch('https://raw.githubusercontent.com/dharineesh1309/dharineesh1309.github.io/main/contributions.json', {cache:'no-store'})
+  fetch('https://raw.githubusercontent.com/dharineesh1309/dharineesh1309.github.io/main/contributions.json?t=' + Math.floor(Date.now() / 60000), {cache:'no-store'})
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(d => {
       draw(d.days.map(x => x.level), new Date(d.days[0].date).getUTCDay());
