@@ -335,7 +335,7 @@ header.intro .cards{animation-delay:2.3s}
       <div class="card">
         <div class="label">github · <span id="total">374 contributions</span> in the last year</div>
         <div class="graph-scroll"><div class="graph" id="graph" role="img" aria-label="GitHub contribution graph for the last year"></div></div>
-        <div class="graph-foot"><span>past 12 months</span><a href="https://github.com/dharineesh1309" target="_blank" rel="noopener">@dharineesh1309 ↗</a></div>
+        <div class="graph-foot"><span>past 12 months · synced hourly</span><a href="https://github.com/dharineesh1309" target="_blank" rel="noopener">@dharineesh1309 ↗</a></div>
       </div>
     </div>
   </header>
@@ -571,13 +571,17 @@ function draw(levels, padStart){
   g.parentElement.scrollLeft = g.scrollWidth;
 }
 draw(SNAP, 0);
-fetch('https://github-contributions-api.jogruber.de/v4/dharineesh1309?y=last')
-  .then(r => r.ok ? r.json() : Promise.reject())
-  .then(d => {
-    draw(d.contributions.map(c => c.level), new Date(d.contributions[0].date).getUTCDay());
-    document.getElementById('total').textContent = d.total.lastYear + ' contributions';
-  })
-  .catch(() => {}); // snapshot stays
+// live data: an hourly GitHub Action writes contributions.json to the repo; read it from raw so it's fresh without a site rebuild
+function loadGraph(){
+  fetch('https://raw.githubusercontent.com/dharineesh1309/dharineesh1309.github.io/main/contributions.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      draw(d.days.map(x => x.level), new Date(d.days[0].date).getUTCDay());
+      document.getElementById('total').textContent = d.total + ' contributions';
+    })
+    .catch(() => {}); // snapshot stays
+}
+loadGraph(); setInterval(loadGraph, 10 * 60 * 1000);
 
 // highlight the section in view in the right-hand index
 const links = [...document.querySelectorAll('.secnav a')];

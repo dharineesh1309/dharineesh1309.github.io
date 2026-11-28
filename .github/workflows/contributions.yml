@@ -1,0 +1,61 @@
+name: Sync GitHub contributions
+
+on:
+  schedule:
+    - cron: "7 * * * *" # every hour, at :07
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/contributions.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: contributions
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch contribution calendar
+        env:
+          # A GH_TOKEN repository secret is optional; the built-in token covers public contributions.
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+        run: |
+          gh api graphql -f login="${{ github.repository_owner }}" -f query='
+            query($login: String!) {
+              user(login: $login) {
+                contributionsCollection {
+                  contributionCalendar {
+                    totalContributions
+                    weeks { contributionDays { date contributionCount contributionLevel } }
+                  }
+                }
+              }
+            }' > raw.json
+          jq '.data.user.contributionsCollection.contributionCalendar as $c | {
+                total: $c.totalContributions,
+                days: [ $c.weeks[].contributionDays[] | {
+                  date,
+                  count: .contributionCount,
+                  level: ({"NONE":0,"FIRST_QUARTILE":1,"SECOND_QUARTILE":2,"THIRD_QUARTILE":3,"FOURTH_QUARTILE":4}[.contributionLevel])
+                } ]
+              }' raw.json > contributions.json
+          rm raw.json
+          jq '{total, days: (.days | length)}' contributions.json
+
+      - name: Commit only if the numbers changed
+        run: |
+          git add contributions.json
+          if git diff --cached --quiet; then
+            echo "No change."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update contributions"
+            git push
+          fi
