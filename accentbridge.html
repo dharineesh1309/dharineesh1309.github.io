@@ -42,6 +42,11 @@ p{margin:0 0 12px;max-width:700px}
 .hook .big{font:700 clamp(30px,5vw,48px)/1.05 var(--sans);letter-spacing:-.035em;color:#efe9df;margin:10px 0 16px}
 .hook p{max-width:620px}
 .hook .q{font:italic 400 clamp(20px,2.6vw,25px)/1.35 var(--serif);color:#efe9df;margin:18px 0 0}
+.story{margin-top:56px;padding-top:8px;border-top:1px solid var(--line)}
+.story h2{margin-top:28px}
+.story h3{font:600 17px/1.3 var(--sans);color:var(--ink);margin:30px 0 8px;letter-spacing:-.01em}
+.story p{font-size:16.5px;line-height:1.75}
+.story .end{font:italic 400 22px/1.4 var(--serif);color:var(--ink);margin-top:22px}
 @media (max-width:640px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0;padding-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
 </style>
 </head>
@@ -69,6 +74,31 @@ p{margin:0 0 12px;max-width:700px}
     <span class="eyebrow">the hard part</span>
     <p class="big">there is no dataset for this.</p>
     <p>to learn an accent, a model needs the same sentence, said by the same voice, in both accents, thousands of times over. nobody has recorded that. not at scale, not in public, not anywhere.</p>  </section>
+
+  <section class="story">
+    <h2>the story so far</h2>
+
+    <h3>how it started</h3>
+    <p>i started working on this in may. honestly, voice models were completely new to me. things like turning audio into mel spectrograms, or mel to ppg, i had never touched any of it.</p>
+    <p>but i knew nlp pretty well, and that helped more than i expected. in nlp you turn text into numbers (word embeddings) so a model can understand it. here it's the same idea, just with sound. once i saw it that way, things started to make sense.</p>
+
+    <h3>lost on github</h3>
+    <p>like everyone, the first thing i did was search github for "accent conversion". i lost a lot of time there. most of the projects were broken, half-finished, or just didn't run, but they were still sitting there looking like they worked.</p>
+    <p>then i found a paper on real-time accent conversion. it had a lot of moving parts: an encoder, a vocoder, a speaker encoder. i spent a long time just trying to understand how they fit together.</p>
+
+    <h3>ai can't build it for you</h3>
+    <p>i tried building the pipeline with help from gpt and claude, a few times. none of those versions really worked. that's when it hit me that this isn't something you can just vibecode. it needs actual research.</p>
+    <p>ai is great to think with, but you can't hand it the architecture and trust whatever comes back. so i changed how i worked. i questioned every suggestion, stayed the human in the loop, and refined the design piece by piece until it made sense to me. that's when real progress started.</p>
+
+    <h3>is this even possible?</h3>
+    <p>almost every paper i read had a small note saying the research was funded by zoom or some other big company. that made me wonder whether two students could actually pull this off.</p>
+    <p>it started as a two-person project, me and a friend. the paper said its model could run on a very small gpu, so our plan was to get it working on a gpu first and then squeeze it down to a cpu.</p>
+    <p>after the first three months, he stepped away. the pipeline kept breaking, placements were coming up, and it was tiring. i kept going.</p>
+
+    <h3>where it is now</h3>
+    <p>after 7 months, it's done and working. it runs live on a call, on a normal laptop cpu, with no gpu. up to five deep learning models work together in real time, every 20 ms, to turn your accent into a us one while keeping your own voice.</p>
+    <p class="end">it works, and i built it.</p>
+  </section>
 
   <h2>how it works</h2>
   <p>a small streaming model listens in 20 ms chunks, maps indian-accented speech to a us accent, and a hifi-gan vocoder turns it back into audio, all fast enough to sit inside a live call.</p>
